@@ -34,6 +34,15 @@ func (c *Client) SignInWithPhonePassword(phone, password string) (*types.TokenRe
 	})
 }
 
+func (c *Client) SignInWithIDToken(provider, token, nonce string) (*types.TokenResponse, error) {
+	return c.Token(types.TokenRequest{
+		GrantType: "id_token",
+		Provider:  provider,
+		IDToken:   token,
+		Nonce:     nonce,
+	})
+}
+
 // Sign in with refresh token
 //
 // This is a convenience method that calls Token with the refresh_token grant type
@@ -60,6 +69,10 @@ func (c *Client) Token(req types.TokenRequest) (*types.TokenResponse, error) {
 		}
 	case "pkce":
 		if req.Code == "" || req.CodeVerifier == "" {
+			return nil, types.ErrInvalidTokenRequest
+		}
+	case "id_token":
+		if req.Provider == "" || req.IDToken == "" {
 			return nil, types.ErrInvalidTokenRequest
 		}
 	default:

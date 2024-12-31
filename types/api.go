@@ -284,10 +284,10 @@ const (
 )
 
 type AuthorizeRequest struct {
-	Provider Provider
+	Provider   Provider
 	RedirectTo string
-	FlowType FlowType
-	Scopes   string
+	FlowType   FlowType
+	Scopes     string
 }
 
 type AuthorizeResponse struct {
@@ -478,6 +478,12 @@ type TokenRequest struct {
 	// Code and CodeVerifier are required if GrantType is 'pkce'.
 	Code         string `json:"auth_code,omitempty"`
 	CodeVerifier string `json:"code_verifier,omitempty"`
+
+	// Provider and Token is required if GrantType is 'id_token`
+	// Nonce is optional
+	Provider string `json:"provider,omitemptY"`
+	IDToken  string `json:"id_token,omitemptY"`
+	Nonce    string `json:"nonce,omitemptY"`
 
 	// Provide Captcha token if enabled. Not required if GrantType is 'refresh_token'.
 	SecurityEmbed
